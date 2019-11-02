@@ -1,0 +1,10 @@
+﻿<h1>Login</h1>
+
+<span class="text-danger">
+    @ViewBag.Error
+</span>
+<form method="post" asp-action="login">
+    <input type="text" placeholder="usuario" name="usuario" id="usuario" value="@ViewBag.UserName" />
+    <input type="password" placeholder="password" name="password" id="password" />
+    <input type="submit" value="Login" />
+</form>
