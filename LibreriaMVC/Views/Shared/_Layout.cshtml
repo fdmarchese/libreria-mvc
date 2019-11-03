@@ -31,12 +31,20 @@
             <div class="navbar-collapse collapse">
                 <ul class="nav navbar-nav">
                     <li><a asp-area="" asp-controller="Generos" asp-action="Index">Géneros</a></li>
+                    <li><a asp-area="" asp-controller="Account" asp-action="Login">Login</a></li>
+                        @if(User.Identity.IsAuthenticated)
+                        {
+                            <li>@User.Identity.Name</li>
+                            <li>
+                                <form method="post" asp-controller="Account" asp-action="Logout">
+                                    <input type="submit" value="Logout" />
+                                </form>
+                            </li>
+                        }
                 </ul>
             </div>
         </div>
     </nav>
-
-    <partial name="_CookieConsentPartial" />
 
     <div class="container body-content">
         @RenderBody()

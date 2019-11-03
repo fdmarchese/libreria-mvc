@@ -11,11 +11,11 @@ using Microsoft.AspNetCore.Authentication;
 
 namespace LibreriaMVC.Controllers
 {
-    public class UsuariosController : Controller
+    public class AccountController : Controller
     {
         private readonly LibreriaDbContext _context;
 
-        public UsuariosController(LibreriaDbContext context)
+        public AccountController(LibreriaDbContext context)
         {
             _context = context;
         }
@@ -26,9 +26,8 @@ namespace LibreriaMVC.Controllers
         }
 
         [HttpPost]
-        public async Task<IActionResult> Login(string email, string password)
+        public async Task<IActionResult> Login([Bind("email","password")] string email, string password)
         {
-            bool usuarioInvalido = true;
             Usuario usuario = _context.Usuarios.FirstOrDefault(usr => usr.Email == email);
 
             if(!string.IsNullOrEmpty(email))
@@ -38,21 +37,25 @@ namespace LibreriaMVC.Controllers
 
                 if(usuario.Contrasenia.SequenceEqual(data))
                 {
-                    usuarioInvalido = true;
+                    ClaimsIdentity identity = new ClaimsIdentity(CookieAuthenticationDefaults.AuthenticationScheme);
+                    identity.AddClaim(new Claim(ClaimTypes.Name, email));
+                    ClaimsPrincipal principal = new ClaimsPrincipal(identity);
+                    await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
+
+                    return RedirectToAction("Index", "Home");
                 }
             }
 
-            if (usuarioInvalido)
-            {
-                ViewBag.Error = "Usuario o contraseña incorrectos";
-                ViewBag.Email = email;
-                return View();
-            }
+            ViewBag.Error = "Usuario o contraseña incorrectos";
+            ViewBag.Email = email;
 
-            ClaimsIdentity identity = new ClaimsIdentity(CookieAuthenticationDefaults.AuthenticationScheme);
-            identity.AddClaim(new Claim(ClaimTypes.Name, email));
-            ClaimsPrincipal principal = new ClaimsPrincipal(identity);
-            await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
+            return View();
+        }
+
+        [HttpPost]
+        public async Task<IActionResult> Logout()
+        {
+            await HttpContext.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
 
             return RedirectToAction("Index", "Home");
         }

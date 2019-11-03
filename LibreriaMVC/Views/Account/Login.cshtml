@@ -4,7 +4,7 @@
     @ViewBag.Error
 </span>
 <form method="post" asp-action="login">
-    <input type="text" placeholder="usuario" name="usuario" id="usuario" value="@ViewBag.UserName" />
+    <input type="email" placeholder="email" name="email" id="email" value="@ViewBag.Email" />
     <input type="password" placeholder="password" name="password" id="password" />
     <input type="submit" value="Login" />
 </form>
