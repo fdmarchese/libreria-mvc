@@ -32,7 +32,7 @@
     </thead>
     <tbody>
 @foreach (var item in Model) {
-        <tr>
+        <tr class="@item.Genero.ClaseCss">
             <td>
                 @Html.DisplayFor(modelItem => item.Titulo)
             </td>

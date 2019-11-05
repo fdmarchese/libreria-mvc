@@ -23,7 +23,7 @@
     </thead>
     <tbody>
 @foreach (var item in Model) {
-        <tr>
+        <tr class="@item.ClaseCss">
             <td>
                 @Html.DisplayFor(modelItem => item.Nombre)
             </td>
