@@ -42,6 +42,9 @@ namespace LibreriaMVC.Controllers
                     ClaimsPrincipal principal = new ClaimsPrincipal(identity);
                     await HttpContext.SignInAsync(CookieAuthenticationDefaults.AuthenticationScheme, principal);
 
+                    usuario.FechaUltimoAcceso = DateTime.Now;
+                    await _context.SaveChangesAsync();
+
                     return RedirectToAction("Index", "Home");
                 }
             }
@@ -71,8 +74,13 @@ namespace LibreriaMVC.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> SignUp([Bind("Id,Email,Nombre,Apellido,Contrasenia,FechaUltimoAcceso")] Usuario usuario)
+        public async Task<IActionResult> SignUp([Bind("Id,Email,Nombre,Apellido")] Usuario usuario, string password)
         {
+            byte[] data = System.Text.Encoding.ASCII.GetBytes(password);
+            data = new System.Security.Cryptography.SHA256Managed().ComputeHash(data);
+
+            usuario.Contrasenia = data;
+
             if (ModelState.IsValid)
             {
                 _context.Add(usuario);
@@ -83,14 +91,14 @@ namespace LibreriaMVC.Controllers
         }
 
         // GET: Usuarios/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public async Task<IActionResult> Edit()
         {
-            if (id == null)
+            if (!User.Identity.IsAuthenticated)
             {
                 return NotFound();
             }
 
-            var usuario = await _context.Usuarios.FindAsync(id);
+            var usuario = await _context.Usuarios.FirstOrDefaultAsync(u => u.Email == User.Identity.Name);
             if (usuario == null)
             {
                 return NotFound();
@@ -103,11 +111,19 @@ namespace LibreriaMVC.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Email,Nombre,Apellido,Contrasenia,FechaUltimoAcceso")] Usuario usuario)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Email,Nombre,Apellido")] Usuario usuario, string password)
         {
             if (id != usuario.Id)
             {
                 return NotFound();
+            }
+
+            if(!string.IsNullOrWhiteSpace(password))
+            {
+                byte[] data = System.Text.Encoding.ASCII.GetBytes(password);
+                data = new System.Security.Cryptography.SHA256Managed().ComputeHash(data);
+
+                usuario.Contrasenia = data;
             }
 
             if (ModelState.IsValid)

@@ -1,10 +1,26 @@
-﻿<h1>Login</h1>
+﻿<div class="text-center">
+    <h1>Bienvenido a la Librería Mvc</h1>
+</div>
 
-<span class="text-danger">
-    @ViewBag.Error
-</span>
-<form method="post" asp-action="login">
-    <input type="email" placeholder="email" name="email" id="email" value="@ViewBag.Email" />
-    <input type="password" placeholder="password" name="password" id="password" />
-    <input type="submit" value="Login" />
-</form>
+<hr />
+
+<div class="row">
+    <div class="col-lg-offset-4 col-md-4">
+        <form method="post" asp-action="login">
+            <div class="text-danger">
+                @ViewBag.Error
+            </div>
+            <div class="form-group">
+                <label laber-for="email" class="control-label">Email:</label>
+                <input name="email" class="form-control" type="email" value="@ViewBag.Email" />
+            </div>
+            <div class="form-group">
+                <label label-for="Nombre" class="control-label">Contraseña:</label>
+                <input name="password" class="form-control" type="password" />
+            </div>
+            <div class="form-group">
+                <input type="submit" value="Login" class="btn btn-default" />
+            </div>
+        </form>
+    </div>
+</div>

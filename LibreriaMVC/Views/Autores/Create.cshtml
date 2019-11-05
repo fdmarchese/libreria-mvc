@@ -1,22 +1,17 @@
-﻿@model LibreriaMVC.Models.Usuario
+﻿@model LibreriaMVC.Models.Autor
 
 @{
-    ViewData["Title"] = "SignUp";
+    ViewData["Title"] = "Create";
 }
 
-<h4>Alta de usuario</h4>
+<h2>Create</h2>
 
+<h4>Autor</h4>
 <hr />
-
 <div class="row">
     <div class="col-md-4">
-        <form asp-action="Signup">
+        <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            <div class="form-group">
-                <label asp-for="Email" class="control-label"></label>
-                <input asp-for="Email" class="form-control" />
-                <span asp-validation-for="Email" class="text-danger"></span>
-            </div>
             <div class="form-group">
                 <label asp-for="Nombre" class="control-label"></label>
                 <input asp-for="Nombre" class="form-control" />
@@ -28,10 +23,6 @@
                 <span asp-validation-for="Apellido" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Contrasenia" class="control-label"></label>
-                <input name="password" class="form-control" type="password" />
-            </div>
-            <div class="form-group">
                 <input type="submit" value="Create" class="btn btn-default" />
             </div>
         </form>
@@ -39,5 +30,5 @@
 </div>
 
 <div>
-    <a asp-action="Index" asp-controller="Home">Volver a la página principal</a>
+    <a asp-action="Index">Back to List</a>
 </div>

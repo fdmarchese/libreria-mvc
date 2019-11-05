@@ -1,4 +1,4 @@
-﻿@model IEnumerable<LibreriaMVC.Models.Genero>
+﻿@model IEnumerable<LibreriaMVC.Models.Autor>
 
 @{
     ViewData["Title"] = "Index";
@@ -16,19 +16,19 @@
                 @Html.DisplayNameFor(model => model.Nombre)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.ClaseCss)
+                @Html.DisplayNameFor(model => model.Apellido)
             </th>
             <th></th>
         </tr>
     </thead>
     <tbody>
 @foreach (var item in Model) {
-        <tr class="@item.ClaseCss">
+        <tr>
             <td>
                 @Html.DisplayFor(modelItem => item.Nombre)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.ClaseCss)
+                @Html.DisplayFor(modelItem => item.Apellido)
             </td>
             <td>
                 <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |

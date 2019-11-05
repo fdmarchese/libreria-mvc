@@ -1,9 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
-
-namespace LibreriaMVC.Models
+﻿namespace LibreriaMVC.Models
 {
     public class LibroAutor
     {
