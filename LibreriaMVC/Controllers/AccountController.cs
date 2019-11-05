@@ -80,6 +80,7 @@ namespace LibreriaMVC.Controllers
             data = new System.Security.Cryptography.SHA256Managed().ComputeHash(data);
 
             usuario.Contrasenia = data;
+
             if (ModelState.IsValid)
             {
                 _context.Add(usuario);
