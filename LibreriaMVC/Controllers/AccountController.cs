@@ -30,7 +30,7 @@ namespace LibreriaMVC.Controllers
         {
             Usuario usuario = _context.Usuarios.FirstOrDefault(usr => usr.Email == email);
 
-            if(!string.IsNullOrEmpty(email))
+            if(!string.IsNullOrWhiteSpace(email) && !string.IsNullOrWhiteSpace(password))
             {
                 byte[] data = System.Text.Encoding.ASCII.GetBytes(password);
                 data = new System.Security.Cryptography.SHA256Managed().ComputeHash(data);
@@ -76,17 +76,25 @@ namespace LibreriaMVC.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> SignUp([Bind("Id,Email,Nombre,Apellido")] Usuario usuario, string password)
         {
-            byte[] data = System.Text.Encoding.ASCII.GetBytes(password);
-            data = new System.Security.Cryptography.SHA256Managed().ComputeHash(data);
-
-            usuario.Contrasenia = data;
-
-            if (ModelState.IsValid)
+            if (!string.IsNullOrWhiteSpace(password))
             {
-                _context.Add(usuario);
-                await _context.SaveChangesAsync();
-                return RedirectToAction("Index", "Home");
+                byte[] data = System.Text.Encoding.ASCII.GetBytes(password);
+                data = new System.Security.Cryptography.SHA256Managed().ComputeHash(data);
+
+                usuario.Contrasenia = data;
+
+                if (ModelState.IsValid)
+                {
+                    _context.Add(usuario);
+                    await _context.SaveChangesAsync();
+                    return RedirectToAction("Index", "Home");
+                }
             }
+            else
+            {
+                ModelState.AddModelError("Contrasenia", "La contraseña no puede estar vacía");
+            }
+
             return View(usuario);
         }
 

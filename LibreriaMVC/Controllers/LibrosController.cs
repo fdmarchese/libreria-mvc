@@ -37,6 +37,7 @@ namespace LibreriaMVC.Controllers
             var libro = await _context.Libros
                 .Include(l => l.Editorial)
                 .Include(l => l.Genero)
+                .Include(l => l.Autores).ThenInclude(a => a.Autor)
                 .FirstOrDefaultAsync(m => m.Id == id);
             if (libro == null)
             {

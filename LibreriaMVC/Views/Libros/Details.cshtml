@@ -41,6 +41,15 @@
             @Html.DisplayFor(model => model.Genero.Nombre)
         </dd>
     </dl>
+
+    <hr />
+    <h3>Autores del libro</h3>
+    <ul>
+        @foreach (LibroAutor libroAutor in Model.Autores)
+        {
+            <li>@libroAutor.Autor.Apellido, @libroAutor.Autor.Nombre</li>
+        }
+    </ul>
 </div>
 <div>
     <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
