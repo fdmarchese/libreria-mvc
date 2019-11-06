@@ -10,6 +10,7 @@ namespace LibreriaMVC.Models
         [Required(ErrorMessage = "Campo requerido")]
         [MaxLength(100, ErrorMessage = "La longitud máxima es de 100 caracteres")]
         [Display(Name = "Correo electrónico")]
+        [EmailAddress(ErrorMessage = "El campo debe ser una dirección de correo electrónico")]
         public string Email { get; set; }
 
         [Required(ErrorMessage = "Campo requerido")]

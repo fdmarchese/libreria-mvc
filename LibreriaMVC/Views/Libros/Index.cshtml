@@ -1,59 +1,66 @@
 ﻿@model IEnumerable<LibreriaMVC.Models.Libro>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Libros";
 }
 
-<h2>Index</h2>
+<h1>Lista de libros</h1>
+
+<hr />
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create" class="btn btn-primary">
+        Crear un nuevo Libro
+    </a>
 </p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Titulo)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.AnioPublicado)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Stock)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Editorial)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Genero)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr class="@item.Genero.ClaseCss">
-            <td>
-                @Html.DisplayFor(modelItem => item.Titulo)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.AnioPublicado)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Stock)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Editorial.Nombre)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Genero.Nombre)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+<div class="table-responsive">
+    <table class="table table-condensed table-hover">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Titulo)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.AnioPublicado)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Stock)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Editorial)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Genero)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr class="@item.Genero.ClaseCss">
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Titulo)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.AnioPublicado)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Stock)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Editorial.Nombre)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Genero.Nombre)
+                    </td>
+                    <td>
+                        <a asp-action="Details" asp-route-id="@item.Id" class="fa fa-fw fa-2x fa-eye" title="Ver detalles"></a>
+                        <a asp-action="Edit" asp-route-id="@item.Id" class="fa fa-fw fa-2x fa-pencil text-warning" title="Editar"></a>
+                        <a asp-action="Delete" asp-route-id="@item.Id" class="fa fa-fw fa-2x fa-trash-o text-danger" title="Eliminar"></a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

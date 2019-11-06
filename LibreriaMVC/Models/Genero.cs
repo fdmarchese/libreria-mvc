@@ -12,6 +12,7 @@ namespace LibreriaMVC.Models
         public string Nombre { get; set; }
 
         [MaxLength(50, ErrorMessage = "La longitud máxima es de 50 caracteres")]
+        [Display(Description = "Clase de css")]
         public string ClaseCss { get; set; }
 
         public virtual ICollection<Libro> Libros { get; set; }

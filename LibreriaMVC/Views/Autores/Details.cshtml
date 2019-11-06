@@ -1,10 +1,8 @@
 ﻿@model LibreriaMVC.Models.Autor
 
 @{
-    ViewData["Title"] = "Details";
+    ViewData["Title"] = $"Autor - {Model.Apellido}, {Model.Nombre}";
 }
-
-<h2>Details</h2>
 
 <div>
     <h4>Autor</h4>
@@ -25,6 +23,21 @@
     </dl>
 </div>
 <div>
-    <a asp-action="Edit" asp-route-id="@Model.Id">Edit</a> |
-    <a asp-action="Index">Back to List</a>
+    <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-primary">
+        Editar
+    </a>
+    @*
+        esto también se puede escribir de la siguiente manera:
+    
+        @Html.ActionLink("Editar", "Edit", "Autores", new { id = Model.Id })
+        
+        escrito de esta manera se está utilizando un Html Helper de Razor.
+        Este helper construye un <a> y arma la ruta del href que finalmente se utiliza
+        la parte "new { id = Model.Id }" indica que se pasa como parámetro al Controller una variable que se llama "id"
+        Eso quiere decir que si nuestro <a> va a dirigirse hacia "Autores\Edit", en el controller de "Autores" debe haber 
+        un método "Edit" y éste recibe un parámetro "id" como entrada
+    *@
+    <a asp-action="Index" class="btn btn-default">
+        volver
+    </a>
 </div>

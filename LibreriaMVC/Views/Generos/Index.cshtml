@@ -1,41 +1,48 @@
 ﻿@model IEnumerable<LibreriaMVC.Models.Genero>
 
 @{
-    ViewData["Title"] = "Index";
+    ViewData["Title"] = "Géneros";
 }
 
-<h2>Index</h2>
+<h1>Lista de géneros</h1>
+
+<hr />
 
 <p>
-    <a asp-action="Create">Create New</a>
+    <a asp-action="Create" class="btn btn-primary">
+        Crear un nuevo Género
+    </a>
 </p>
-<table class="table">
-    <thead>
-        <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.Nombre)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ClaseCss)
-            </th>
-            <th></th>
-        </tr>
-    </thead>
-    <tbody>
-@foreach (var item in Model) {
-        <tr class="@item.ClaseCss">
-            <td>
-                @Html.DisplayFor(modelItem => item.Nombre)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ClaseCss)
-            </td>
-            <td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>
-        </tr>
-}
-    </tbody>
-</table>
+<div class="table-responsive">
+    <table class="table table-condensed table-hover">
+        <thead>
+            <tr>
+                <th>
+                    @Html.DisplayNameFor(model => model.Nombre)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ClaseCss)
+                </th>
+                <th></th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var item in Model)
+            {
+                <tr class="@item.ClaseCss">
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Nombre)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ClaseCss)
+                    </td>
+                    <td>
+                        <a asp-action="Details" asp-route-id="@item.Id" class="fa fa-fw fa-2x fa-eye" title="Ver detalles"></a>
+                        <a asp-action="Edit" asp-route-id="@item.Id" class="fa fa-fw fa-2x fa-pencil text-warning" title="Editar"></a>
+                        <a asp-action="Delete" asp-route-id="@item.Id" class="fa fa-fw fa-2x fa-trash-o text-danger" title="Eliminar"></a>
+                    </td>
+                </tr>
+            }
+        </tbody>
+    </table>
+</div>

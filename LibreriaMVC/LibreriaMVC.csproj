@@ -16,4 +16,8 @@
   <ItemGroup>
     <Content Remove="Views\Shared\_CookieConsentPartial.cshtml" />
   </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="wwwroot\lib\font-awesome\" />
+  </ItemGroup>
 </Project>
