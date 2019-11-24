@@ -6,6 +6,7 @@ using Microsoft.EntityFrameworkCore;
 using LibreriaMVC.Database;
 using LibreriaMVC.Models;
 using Microsoft.AspNetCore.Authorization;
+using System.Collections.Generic;
 
 namespace LibreriaMVC.Controllers
 {
@@ -50,6 +51,7 @@ namespace LibreriaMVC.Controllers
         // GET: Libros/Create
         public IActionResult Create()
         {
+            ViewData["Autores"] = new SelectList(_context.Autores, "Id", "NombreApellido");
             ViewData["EditorialId"] = new SelectList(_context.Editoriales, "Id", "Nombre");
             ViewData["GeneroId"] = new SelectList(_context.Generos, "Id", "Nombre");
             return View();
@@ -60,32 +62,45 @@ namespace LibreriaMVC.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Create([Bind("Id,Titulo,AnioPublicado,Stock,EditorialId,GeneroId")] Libro libro)
+        public async Task<IActionResult> Create([Bind("Id,Titulo,AnioPublicado,Stock,EditorialId,GeneroId")] Libro libro, List<int> autores)
         {
             if (ModelState.IsValid)
             {
                 _context.Add(libro);
+
+                foreach (var autor in autores)
+                {
+                    _context.Add(new LibroAutor() { AutorId = autor, Libro = libro });
+                }
+
                 await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
+
+            ViewData["Autores"] = new SelectList(_context.Autores, "Id", "NombreApellido", autores);
             ViewData["EditorialId"] = new SelectList(_context.Editoriales, "Id", "Nombre", libro.EditorialId);
             ViewData["GeneroId"] = new SelectList(_context.Generos, "Id", "Nombre", libro.GeneroId);
             return View(libro);
         }
 
         // GET: Libros/Edit/5
-        public async Task<IActionResult> Edit(int? id)
+        public IActionResult Edit(int? id)
         {
             if (id == null)
             {
                 return NotFound();
             }
 
-            var libro = await _context.Libros.FindAsync(id);
+            var libro = _context
+                .Libros
+                .Include(l => l.Autores)
+                .FirstOrDefault(lib => lib.Id == id);
+
             if (libro == null)
             {
                 return NotFound();
             }
+            ViewData["Autores"] = new SelectList(_context.Autores, "Id", "NombreApellido", libro.Autores.Select(autores => autores.AutorId));
             ViewData["EditorialId"] = new SelectList(_context.Editoriales, "Id", "Nombre", libro.EditorialId);
             ViewData["GeneroId"] = new SelectList(_context.Generos, "Id", "Nombre", libro.GeneroId);
             return View(libro);
@@ -96,7 +111,7 @@ namespace LibreriaMVC.Controllers
         // more details see http://go.microsoft.com/fwlink/?LinkId=317598.
         [HttpPost]
         [ValidateAntiForgeryToken]
-        public async Task<IActionResult> Edit(int id, [Bind("Id,Titulo,AnioPublicado,Stock,EditorialId,GeneroId")] Libro libro)
+        public async Task<IActionResult> Edit(int id, [Bind("Id,Titulo,AnioPublicado,Stock,EditorialId,GeneroId")] Libro libro, List<int> autores)
         {
             if (id != libro.Id)
             {
@@ -108,6 +123,19 @@ namespace LibreriaMVC.Controllers
                 try
                 {
                     _context.Update(libro);
+
+                    var dbLibro = _context
+                        .Libros
+                        .Include(lib => lib.Autores)
+                        .FirstOrDefault(lib => lib.Id == id);
+
+                    _context.LibrosAutores.RemoveRange(dbLibro.Autores);
+
+                    foreach (var autor in autores)
+                    {
+                        _context.Add(new LibroAutor() { AutorId = autor, LibroId = id });
+                    }
+
                     await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
@@ -123,6 +151,7 @@ namespace LibreriaMVC.Controllers
                 }
                 return RedirectToAction(nameof(Index));
             }
+            ViewData["Autores"] = new SelectList(_context.Autores, "Id", "NombreApellido", autores);
             ViewData["EditorialId"] = new SelectList(_context.Editoriales, "Id", "Nombre", libro.EditorialId);
             ViewData["GeneroId"] = new SelectList(_context.Generos, "Id", "Nombre", libro.GeneroId);
             return View(libro);
