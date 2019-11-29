@@ -23,7 +23,7 @@ namespace LibreriaMVC
         public void ConfigureServices(IServiceCollection services)
         {
             // Enable cookie authentication
-            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie();
+            services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(options => options.LoginPath = "/Usuarios/Login");
 
             services.AddHttpContextAccessor();
 

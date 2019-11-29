@@ -35,19 +35,19 @@
                         <li class="dropdown">
                             <a href="#" class="dropdown-toggle" data-toggle="dropdown" role="button" aria-haspopup="true" aria-expanded="false">@User.Identity.Name <span class="caret"></span></a>
                             <ul class="dropdown-menu">
-                                <li><a asp-controller="Account" asp-action="Edit">Editar</a></li>
+                                <li><a asp-controller="Usuarios" asp-action="Edit">Editar</a></li>
                                 <li>
-                                    <form method="post" asp-controller="Account" asp-action="Logout">
-                                        <button class="btn btn-link" type="submit">Logout</button>
-                                    </form>
+                                    <!-- Acá utilizamos un a fuera del formulario para hacer submit del mismo. -->
+                                    <a href="#" onclick="document.getElementById('logoutForm').submit();">Logout</a>
+                                    <form id="logoutForm" method="post" asp-controller="Usuarios" asp-action="Logout"></form>
                                 </li>
                             </ul>
                         </li>
                     }
                     else
                     {
-                        <li><a asp-area="" asp-controller="Account" asp-action="Login">Login</a></li>
-                        <li><a asp-area="" asp-controller="Account" asp-action="Signup">Signup</a></li>
+                        <li><a asp-controller="Usuarios" asp-action="Login">Login</a></li>
+                        <li><a asp-controller="Usuarios" asp-action="Signup">Signup</a></li>
                     }
                 </ul>
             </div>

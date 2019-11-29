@@ -14,5 +14,33 @@
     Para entender bien el funcionamiento ubicar primero los modelos dentro de la carpeta <span class="badge bg-primary">Models</span> 
     los modelos utilizados en la librería, la base de datos utilizada es una base de datos en memoria (ver su configuración en el 
     archivo <span class="badge bg-primary">Startup.cs</span>)
+</p>
 
+<hr />
+
+<p>
+    La versión de bootstrap utilizada en este proyecto es Bootstrap v3.4.1, para mayor detalles ver <a href="https://getbootstrap.com/docs/3.4/">aquí</a>.
+    <br />
+    Los íconos utilizados son font-awesome, siendo la versión específica utilizada Font Awesome 4.7.0. Para mayor detalle ver <a href="https://fontawesome.com/v4.7.0/icons/">aquí</a>.
+</p>
+
+<hr />
+
+<p>
+    La autenticación utilizada es por cookies.
+    <br />
+    Para ver los detalles de la implementación de la autenticación ver el controller y vistas de <span class="badge bg-primary">Usuarios</span>.
+    <br />
+    También ver que el archivo <span class="badge bg-primary">Startup.cs</span> incluye 3 líneas necesarias:
+    <ul>
+        <li>
+            <pre>services.AddAuthentication(CookieAuthenticationDefaults.AuthenticationScheme).AddCookie(options => options.LoginPath = "/Usuarios/Login");</pre>
+        </li>
+        <li>
+            <pre>services.AddHttpContextAccessor();</pre>
+        </li>
+        <li>
+            <pre>app.UseAuthentication();</pre>
+        </li>
+    </ul>
 </p>

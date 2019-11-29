@@ -1,41 +1,43 @@
-﻿using System;
-using System.Linq;
-using System.Threading.Tasks;
+﻿using LibreriaMVC.Database;
+using LibreriaMVC.Models;
+using Microsoft.AspNetCore.Authentication;
+using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
-using LibreriaMVC.Database;
-using LibreriaMVC.Models;
+using System;
+using System.Linq;
 using System.Security.Claims;
-using Microsoft.AspNetCore.Authentication.Cookies;
-using Microsoft.AspNetCore.Authentication;
+using System.Threading.Tasks;
 
 namespace LibreriaMVC.Controllers
 {
-    public class AccountController : Controller
+    public class UsuariosController : Controller
     {
         private readonly LibreriaDbContext _context;
 
-        public AccountController(LibreriaDbContext context)
+        public UsuariosController(LibreriaDbContext context)
         {
             _context = context;
         }
 
-        public IActionResult Login()
+        public IActionResult Login(string returnUrl)
         {
+            TempData["returnUrl"] = returnUrl;
             return View();
         }
 
         [HttpPost]
-        public async Task<IActionResult> Login([Bind("email","password")] string email, string password)
+        public async Task<IActionResult> Login([Bind("email", "password")] string email, string password)
         {
+            string returnUrl = TempData["returnUrl"] as string;
             Usuario usuario = _context.Usuarios.FirstOrDefault(usr => usr.Email == email);
 
-            if(!string.IsNullOrWhiteSpace(email) && !string.IsNullOrWhiteSpace(password))
+            if (!string.IsNullOrWhiteSpace(email) && !string.IsNullOrWhiteSpace(password))
             {
                 byte[] data = System.Text.Encoding.ASCII.GetBytes(password);
                 data = new System.Security.Cryptography.SHA256Managed().ComputeHash(data);
 
-                if(usuario.Contrasenia.SequenceEqual(data))
+                if (usuario.Contrasenia.SequenceEqual(data))
                 {
                     ClaimsIdentity identity = new ClaimsIdentity(CookieAuthenticationDefaults.AuthenticationScheme);
                     identity.AddClaim(new Claim(ClaimTypes.Name, email));
@@ -44,6 +46,9 @@ namespace LibreriaMVC.Controllers
 
                     usuario.FechaUltimoAcceso = DateTime.Now;
                     await _context.SaveChangesAsync();
+
+                    if (!string.IsNullOrWhiteSpace(returnUrl))
+                        return Redirect(returnUrl);
 
                     return RedirectToAction("Index", "Home");
                 }
@@ -126,7 +131,7 @@ namespace LibreriaMVC.Controllers
                 return NotFound();
             }
 
-            if(!string.IsNullOrWhiteSpace(password))
+            if (!string.IsNullOrWhiteSpace(password))
             {
                 byte[] data = System.Text.Encoding.ASCII.GetBytes(password);
                 data = new System.Security.Cryptography.SHA256Managed().ComputeHash(data);
